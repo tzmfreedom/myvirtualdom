@@ -121,12 +121,39 @@ class AppManager {
 }
 
 class Base {
-  constructor(props) {
+  constructor(props, context) {
     this.props = props;
+    this.context = context;
+    this.onMounted();
   }
+
+  onMounted() {}
 
   setState(newState) {
     this.state = Object.assign({}, this.state, newState)
+  }
+
+  getStore() {
+    return this.context.store;
+  }
+}
+
+function createStore(reducer) {
+  let state = {};
+  const listeners = [];
+  const getState = () => state;
+  const dispatch = (action) => {
+    state = reducer(state, action);
+    listeners.forEach((listener) => listener());
+  };
+  const subscribe = (listener) => listeners.push(listener);
+
+  dispatch();
+
+  return {
+    dispatch,
+    getState,
+    subscribe,
   }
 }
 
