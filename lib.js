@@ -121,7 +121,45 @@ class AppManager {
 }
 
 class Base {
+  constructor(props) {
+    this.props = props;
+  }
+
   setState(newState) {
     this.state = Object.assign({}, this.state, newState)
   }
 }
+
+class Converter {
+  convert(el) {
+    switch (el.nodeType) {
+      case Node.ELEMENT_NODE:
+        const attributes = {};
+        for (let i = 0; i < el.attributes.length; i++) {
+          const node = el.attributes[i];
+          attributes[node.name] = node.value;
+        }
+        let children = []
+        if (el.children) {
+          children = Array.from(el.children).map((child) => {
+            return this.convert(child);
+          });
+        }
+        return new Element(el.tagName, attributes, children);
+      case Node.TEXT_NODE:
+        return new Text(el.text);
+    }
+  }
+}
+
+const str = `
+<div>
+<h1>
+<p id="123">text</p>
+</h1>
+<h2></h2>
+</div>
+`
+const parser = new DOMParser();
+const el = parser.parseFromString(str, 'application/xml');
+const res = new Converter().convert(el.children[0])

@@ -1,6 +1,6 @@
 class App extends Base {
   constructor() {
-    super()
+    super({})
     this.state = {
       text: 0
     }
@@ -29,7 +29,19 @@ class App extends Base {
           })
         }).bind(this),
         value: this.state.text
-      }, [])
+      }, []),
+      (new Foo({ text: this.state.text })).render()
     ])
+  }
+}
+
+class Foo extends Base {
+  constructor(props) {
+    super(props);
+    this.props = props;
+  }
+
+  render() {
+    return h('div', [], [t(this.props.text)])
   }
 }
