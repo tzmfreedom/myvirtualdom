@@ -126,8 +126,12 @@ class Base {
     this.state = Object.assign({}, this.state, newState);
   }
 
-  getStore() {
-    return this.context.store;
+  getState() {
+    return this.context.store.getState();
+  }
+
+  dispatch(action) {
+    return this.context.store.dispatch(action);
   }
 
   renderTree() {

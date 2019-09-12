@@ -16,7 +16,7 @@ class App extends Base {
     this.setState({
       text: e.target.value
     });
-    this.getStore().dispatch(changeMessage(e.target.value));
+    this.dispatch(changeMessage(e.target.value));
   }
 
   onClickButton() {
@@ -39,7 +39,7 @@ class App extends Base {
       <li>{variables.record}</li>
     </for>
   </ul>
-  <p>{this.getStore().getState().message + '!!'}</p>
+  <p>{this.getState().message + '!!'}</p>
   <input type="text" value="{this.state.text}" oninput="{this.onChangeText.bind(this)}"/>
   <input type="button" value="Add" onclick="{this.onClickButton.bind(this)}"/>
   <Foo text="{this.state.text}"/>
