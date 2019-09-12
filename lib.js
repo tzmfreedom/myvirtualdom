@@ -17,6 +17,7 @@ class AppManager {
     this.currentTree = null;
     this.currentRoot = null;
     this.app = app;
+    this.app.context.manager = this;
     this.selector = selector;
   }
 
@@ -58,12 +59,12 @@ class AppManager {
     }
     element.children.forEach((child) => {
       el.append(this.createElement(child));
-    })
+    });
     return el;
   }
 
   isEvent(name) {
-    return /^on/.test(name)
+    return /^on/.test(name);
   }
 
   replaceNode(el, oldNode, newNode, index) {
@@ -136,13 +137,11 @@ class Base {
     return converter.convert(el.children[0]);
   }
 
-  evalText(text) {
+  evalText(text, variables = {}) {
     if (/^{.*}$/.test(text)) {
       const script = text.substring(1, text.length-1);
-      const r = eval(script);
-      return r;
+      return eval(script);
     }
     return text;
   }
 }
-
