@@ -28,10 +28,21 @@ class Converter {
           }
           return new Element('div', attributes, children)
         }
+        if (el.tagName === 'for') {
+          // TODO: impl
+          const records = this.evalText(`{${el.attributes.records.value}}`);
+          const v = el.attributes.var.value;
+          return records.forEach((record) => {
+            children = Array.from(el.children).map((child) => {
+              return this.convert(child);
+            }).filter(v => v);
+            return new Element('div', attributes, children)
+          })
+        }
 
         if (/^[A-Z].*$/.test(el.tagName)) {
           const klass = eval(el.tagName);
-          return (new klass(attributes, this.context.context)).render();
+          return (new klass(attributes, this.context.context)).renderTree();
         }
         return new Element(el.tagName, attributes, children);
       case Node.TEXT_NODE:
