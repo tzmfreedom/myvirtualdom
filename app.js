@@ -5,34 +5,27 @@ class App extends Base {
     }
   }
 
+  onChangeText(e) {
+    this.setState({
+      text: e.target.value
+    });
+    this.getStore().dispatch(changeMessage(e.target.value));
+  }
+
   render() {
-    return h('div', {}, [
-      (this.state.text === '') ? (
-        h('p', [], [t('blank')])
-      ) : (
-        h('p', {
-          onclick: ((e) => {
-            this.setState({
-              text: this.state.text + 1
-            })
-          }).bind(this)
-        }, [
-          t(this.state.text)
-        ])
-      ),
-      h('p', {}, [t(this.getStore().getState().message)]),
-      h('input', {
-        type: 'text',
-        onkeyup: ((e) => {
-          this.setState({
-            text: e.target.value
-          })
-          this.getStore().dispatch(changeMessage(`${e.target.value}:hoge`))
-        }).bind(this),
-        value: this.state.text
-      }, []),
-      (new Foo({ text: this.state.text }, this.context)).render()
-    ])
+    const str = `
+<div>
+  <if c="this.state.text.length === 0">
+    <p>blank</p>
+  </if>
+  <if c="this.state.text.length !== 0">
+    <p>{this.state.text}</p>
+  </if>
+  <p>{this.getStore().getState().message + '!!'}</p>
+  <input type="text" value="{this.state.text}" oninput="{this.onChangeText.bind(this)}"/>
+  <Foo text="{this.state.text}"/>
+</div>`
+    return this.template(str, this);
   }
 }
 
