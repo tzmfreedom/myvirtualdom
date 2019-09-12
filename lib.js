@@ -126,7 +126,7 @@ class Base {
     this.state = Object.assign({}, this.state, newState);
   }
 
-  getState() {
+  getStoreState() {
     return this.context.store.getState();
   }
 

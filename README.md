@@ -56,7 +56,7 @@ class App extends Base {
       <li>{variables.record}</li>
     </for>
   </ul>
-  <p>{this.getState().message + '!!'}</p>
+  <p>{this.getStoreState().message + '!!'}</p>
   <input type="text" value="{this.state.text}" oninput="{this.onChangeText.bind(this)}"/>
   <input type="button" value="Add" onclick="{this.onClickButton.bind(this)}"/>
   <Foo text="{this.state.text}"/>
